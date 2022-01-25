@@ -14,7 +14,12 @@ namespace AltaSiTTi
 {
     public partial class Form1 : Form
     {
-        //0.1
+        /*
+         * 
+         V2.0.7
+        - Se agrega base y puesto en la busquedas
+        - Se eliminan operadores en los resultados
+        */
         private String versiontext = "0.2.7";
         private String version = "fa94193c58067f3283e7cc3901199175";
         public static String conexionsqllast = "server=148.223.153.37,5314; database=InfEq;User ID=eordazs;Password=Corpame*2013; integrated security = false ; MultipleActiveResultSets=True";
@@ -83,7 +88,7 @@ namespace AltaSiTTi
                 using (SqlConnection conexion = new SqlConnection(nsql))
                 {
                     conexion.Open();
-                    String consulta = "SELECT nomtrab.nombre, nomtrab.apepat, nomtrab.apemat, ISNULL(CC.desubi,'') AS [cc], ISNULL(nompais.despai,'') AS [base], nomtrab.cvetra as numempleado, ISNULL(nomciud.desciu,'') AS [empresa], RTRIM(LTRIM(ISNULL(nompues.despue,''))) AS [Puesto], nomtrab.email, nomtrab.tel1, nomtrab.numext FROM [Nom2001].[dbo].[nomtrab]  LEFT JOIN nomubic CC ON nomtrab.cvepa2 = CC.cvepai AND nomtrab.cveci2 = CC.cveciu AND nomtrab.cvecia = CC.cvecia AND nomtrab.cveubi = CC.cveubi LEFT JOIN nompais ON nomtrab.cvepa2 = nompais.cvepai AND nomtrab.cvecia = nompais.cvecia LEFT JOIN nomciud ON nomtrab.cvepa2 = nomciud.cvepai AND nomtrab.cveci2 = nomciud.cveciu AND nomtrab.cvecia = nomciud.cvecia LEFT JOIN nompues ON nomtrab.cvepue = nompues.cvepue AND nomtrab.cvecia = nompues.cvecia where status='A'";
+                    String consulta = "SELECT nomtrab.nombre, nomtrab.apepat, nomtrab.apemat, ISNULL(CC.desubi,'') AS [cc], ISNULL(nompais.despai,'') AS [base], nomtrab.cvetra as numempleado, ISNULL(nomciud.desciu,'') AS [empresa], RTRIM(LTRIM(ISNULL(nompues.despue,''))) AS [Puesto], nomtrab.email, nomtrab.tel1, nomtrab.numext FROM [Nom2001].[dbo].[nomtrab]  LEFT JOIN nomubic CC ON nomtrab.cvepa2 = CC.cvepai AND nomtrab.cveci2 = CC.cveciu AND nomtrab.cvecia = CC.cvecia AND nomtrab.cveubi = CC.cveubi LEFT JOIN nompais ON nomtrab.cvepa2 = nompais.cvepai AND nomtrab.cvecia = nompais.cvecia LEFT JOIN nomciud ON nomtrab.cvepa2 = nomciud.cvepai AND nomtrab.cveci2 = nomciud.cveciu AND nomtrab.cvecia = nomciud.cvecia LEFT JOIN nompues ON nomtrab.cvepue = nompues.cvepue AND nomtrab.cvecia = nompues.cvecia where status='A' AND nompues.despue NOT LIKE '%OPERADOR DE%'";
                     SqlCommand comm = new SqlCommand(consulta, conexion);
                     SqlDataReader nwReader = comm.ExecuteReader();
                     while (nwReader.Read())
@@ -145,7 +150,7 @@ namespace AltaSiTTi
             {
                 foreach (String[] empleado in lista)
                 {
-                    dataGridView1.Rows.Add(empleado[11], empleado[0]);
+                    dataGridView1.Rows.Add(empleado[11] + " | " + empleado[6] + " | " + empleado[7], empleado[0], empleado[11]);
                 }
             }
         }
