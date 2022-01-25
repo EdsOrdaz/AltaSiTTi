@@ -15,8 +15,8 @@ namespace AltaSiTTi
     public partial class Form1 : Form
     {
         //0.1
-        private String versiontext = "0.26";
-        private String version = "261943f3a93b683ceeac658927f3923f";
+        private String versiontext = "0.2.7";
+        private String version = "fa94193c58067f3283e7cc3901199175";
         public static String conexionsqllast = "server=148.223.153.37,5314; database=InfEq;User ID=eordazs;Password=Corpame*2013; integrated security = false ; MultipleActiveResultSets=True";
 
         public static String servivor = "40.76.105.1,5055";
@@ -118,7 +118,7 @@ namespace AltaSiTTi
             {
                 foreach (String[] n in lista)
                 {
-                    dataGridView1.Rows.Add(n[11], n[0]);
+                    dataGridView1.Rows.Add(n[11]+" | "+n[6]+" | "+n[7], n[0], n[11]);
                 }
             }
             buscar.Enabled = true;
@@ -133,10 +133,11 @@ namespace AltaSiTTi
                 foreach (String[] empleado in lista)
                 {
                     String nmayus = empleado[11].ToString().ToUpper();
-                    String nemple = empleado[0].ToString().ToUpper();
-                    if (nmayus.Contains(buscar.Text.ToUpper()) || nemple.Contains(buscar.Text.ToUpper()))
+                    //String nemple = empleado[0].ToString().ToUpper();
+                    String nbase = empleado[6].ToString().ToUpper();
+                    if (nmayus.Contains(buscar.Text.ToUpper()) || nbase.Contains(buscar.Text.ToUpper()))
                     {
-                        dataGridView1.Rows.Add(empleado[11], empleado[0]);
+                        dataGridView1.Rows.Add(empleado[11]+" | "+empleado[6]+" | "+empleado[7], empleado[0], empleado[11]);
                     }
                 }
             }
@@ -151,17 +152,19 @@ namespace AltaSiTTi
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            nombreusuario = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(dataGridView1.Rows[e.RowIndex].Cells["nombre"].Value.ToString().ToLower());
+            nombreusuario = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(dataGridView1.Rows[e.RowIndex].Cells["nombrecopiar"].Value.ToString().ToLower());
             Clipboard.SetDataObject(nombreusuario, true);
         }
 
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            nombreusuario = dataGridView1.Rows[e.RowIndex].Cells["nombre"].Value.ToString();
+            nombreusuario = dataGridView1.Rows[e.RowIndex].Cells["nombrecopiar"].Value.ToString();
             numerodeempelado = dataGridView1.Rows[e.RowIndex].Cells["num"].Value.ToString();
             Clipboard.SetDataObject(nombreusuario, true);
             Usuario usuario = new Usuario();
+            this.Enabled = false;
             usuario.ShowDialog();
+            this.Enabled = true;
         }
     }
 }

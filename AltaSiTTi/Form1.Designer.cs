@@ -35,9 +35,10 @@ namespace AltaSiTTi
             this.buscar = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.nombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.num = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.nombrecopiar = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -47,7 +48,7 @@ namespace AltaSiTTi
             this.buscar.Location = new System.Drawing.Point(8, 25);
             this.buscar.Margin = new System.Windows.Forms.Padding(2);
             this.buscar.Name = "buscar";
-            this.buscar.Size = new System.Drawing.Size(306, 23);
+            this.buscar.Size = new System.Drawing.Size(525, 23);
             this.buscar.TabIndex = 1;
             this.buscar.KeyUp += new System.Windows.Forms.KeyEventHandler(this.buscar_KeyUp);
             // 
@@ -80,7 +81,8 @@ namespace AltaSiTTi
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.nombre,
-            this.num});
+            this.num,
+            this.nombrecopiar});
             this.dataGridView1.EnableHeadersVisualStyles = false;
             this.dataGridView1.Location = new System.Drawing.Point(8, 53);
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(2);
@@ -89,10 +91,15 @@ namespace AltaSiTTi
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.RowHeadersWidth = 62;
             this.dataGridView1.RowTemplate.Height = 28;
-            this.dataGridView1.Size = new System.Drawing.Size(305, 159);
+            this.dataGridView1.Size = new System.Drawing.Size(525, 159);
             this.dataGridView1.TabIndex = 2;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             this.dataGridView1.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellDoubleClick);
+            // 
+            // backgroundWorker1
+            // 
+            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
             // 
             // nombre
             // 
@@ -109,16 +116,18 @@ namespace AltaSiTTi
             this.num.ReadOnly = true;
             this.num.Visible = false;
             // 
-            // backgroundWorker1
+            // nombrecopiar
             // 
-            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
-            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
+            this.nombrecopiar.HeaderText = "Nombre a Copiar";
+            this.nombrecopiar.Name = "nombrecopiar";
+            this.nombrecopiar.ReadOnly = true;
+            this.nombrecopiar.Visible = false;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(319, 222);
+            this.ClientSize = new System.Drawing.Size(538, 215);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.buscar);
@@ -142,9 +151,10 @@ namespace AltaSiTTi
         private System.Windows.Forms.TextBox buscar;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn nombre;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn nombre;
         private System.Windows.Forms.DataGridViewTextBoxColumn num;
+        private System.Windows.Forms.DataGridViewTextBoxColumn nombrecopiar;
     }
 }
 
