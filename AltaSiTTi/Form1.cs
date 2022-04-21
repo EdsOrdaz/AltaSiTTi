@@ -16,6 +16,8 @@ namespace AltaSiTTi
     {
         /*
          * 
+V2.0.9
+    - Se agrega opcion de baja de usuarios
 V2.0.8
     - Se agrega lista de empleados dados de baja
 
@@ -23,8 +25,8 @@ V2.0.7
     - Se agrega base y puesto en la busquedas
     - Se eliminan operadores en los resultados
         */
-        private String versiontext = "0.2.8";
-        private String version = "9a142120eb109427bad113f4c6e61a32";
+        private String versiontext = "0.2.9";
+        private String version = "44f4782104554e9fbe12aa173b04664b";
         public static String conexionsqllast = "server=148.223.153.37,5314; database=InfEq;User ID=eordazs;Password=Corpame*2013; integrated security = false ; MultipleActiveResultSets=True";
 
         public static String servivor = "40.76.105.1,5055";
@@ -199,7 +201,9 @@ V2.0.7
                 buscarbaja = false;
             }
             buscar_empleado();
+            buscar.Focus();
         }
+        
         void buscar_empleado()
         {
             dataGridView1.Rows.Clear();

@@ -179,6 +179,7 @@ namespace AltaSiTTi
                 MessageBox.Show("El campo correo no puede quedar vacio.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            
             //buscar en tabla empleados
             using (SqlConnection conexion = new SqlConnection(nsql))
             {
@@ -276,6 +277,34 @@ namespace AltaSiTTi
                 }
             }
         }
+        private void BajaSiTTi()
+        {
+            //buscar en tabla usuarios
+            using (SqlConnection conexion = new SqlConnection(nsql))
+            {
+                conexion.Open();
+                String consulta = "SELECT * FROM [bd_SiTTi].[dbo].[cg_usuario] where status='A' AND id_empleado='" + id_empleado + "'";
+                Console.WriteLine(consulta);
+                SqlCommand comm = new SqlCommand(consulta, conexion);
+                SqlDataReader nwReader = comm.ExecuteReader();
+                while (nwReader.Read())
+                {
+                    String sql2 = "UPDATE cg_usuario SET status = 'B' WHERE id_usuario = '" + nwReader["id_usuario"].ToString() + "'";
+                    SqlCommand comm2 = new SqlCommand(sql2, conexion);
+                    comm2.ExecuteReader();
+
+                    String sql3 = "UPDATE cg_empleado SET status = 'B' WHERE id_empleado = '" + nwReader["id_empleado"].ToString() + "'";
+                    SqlCommand comm3 = new SqlCommand(sql3, conexion);
+                    comm3.ExecuteReader();
+
+
+                    MessageBox.Show("Usuario dado de baja.", "Baja en SiTTi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    Close();
+                    return;
+                }
+                MessageBox.Show("El usuario no existe en la tabla de usuarios.", "Baja en SiTTi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
         private void label13_Click(object sender, EventArgs e)
         {
@@ -371,5 +400,23 @@ namespace AltaSiTTi
             Clipboard.SetDataObject(user.Text, true);
         }
         #endregion
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            using (SqlConnection conexion = new SqlConnection(nsql))
+            {
+                conexion.Open();
+                String consulta = "SELECT * FROM [bd_SiTTi].[dbo].[cg_empleado] where status = 'A' AND no_empleado='" + no_empleado + "'";
+                SqlCommand comm = new SqlCommand(consulta, conexion);
+                SqlDataReader nwReader = comm.ExecuteReader();
+                while (nwReader.Read())
+                {
+                    id_empleado = Convert.ToInt32(nwReader["id_empleado"].ToString());
+                    BajaSiTTi();
+                    return;
+                }
+                MessageBox.Show("El usuario no existe en la tabla de empleados.", "Baja en SiTTi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }
