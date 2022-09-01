@@ -16,12 +16,17 @@ namespace AltaSiTTi
     {
         /*
          * 
-         V2.0.7
-        - Se agrega base y puesto en la busquedas
-        - Se eliminan operadores en los resultados
+V2.0.9
+    - Se agrega opcion de baja de usuarios
+V2.0.8
+    - Se agrega lista de empleados dados de baja
+
+V2.0.7
+    - Se agrega base y puesto en la busquedas
+    - Se eliminan operadores en los resultados
         */
-        private String versiontext = "0.2.7";
-        private String version = "fa94193c58067f3283e7cc3901199175";
+        private String versiontext = "0.2.91";
+        private String version = "4d497f01909c9971f18f2ee623031297436df6bd";
         public static String conexionsqllast = "server=148.223.153.37,5314; database=InfEq;User ID=eordazs;Password=Corpame*2013; integrated security = false ; MultipleActiveResultSets=True";
 
         public static String servivor = "40.76.105.1,5055";
@@ -31,9 +36,12 @@ namespace AltaSiTTi
         public static string nsql = "server=" + servivor + "; database=" + basededatos + " ;User ID=" + usuariobd + ";Password=" + passbd + "; integrated security = false ; MultipleActiveResultSets=True";
 
 
+        public static List<String[]> lista_buscar = new List<String[]>();
         public static List<String[]> lista = new List<String[]>();
+        public static List<String[]> lista_baja = new List<String[]>();
         public static String nombreusuario;
         public static String numerodeempelado;
+        public static Boolean buscarbaja = false;
 
         public Form1()
         {
@@ -74,6 +82,7 @@ namespace AltaSiTTi
                 return;
             }
             buscar.Enabled = false;
+            button1.Enabled = false;
             if (backgroundWorker1.IsBusy != true)
             {
                 lista.Clear();
@@ -88,25 +97,49 @@ namespace AltaSiTTi
                 using (SqlConnection conexion = new SqlConnection(nsql))
                 {
                     conexion.Open();
-                    String consulta = "SELECT nomtrab.nombre, nomtrab.apepat, nomtrab.apemat, ISNULL(CC.desubi,'') AS [cc], ISNULL(nompais.despai,'') AS [base], nomtrab.cvetra as numempleado, ISNULL(nomciud.desciu,'') AS [empresa], RTRIM(LTRIM(ISNULL(nompues.despue,''))) AS [Puesto], nomtrab.email, nomtrab.tel1, nomtrab.numext FROM [Nom2001].[dbo].[nomtrab]  LEFT JOIN nomubic CC ON nomtrab.cvepa2 = CC.cvepai AND nomtrab.cveci2 = CC.cveciu AND nomtrab.cvecia = CC.cvecia AND nomtrab.cveubi = CC.cveubi LEFT JOIN nompais ON nomtrab.cvepa2 = nompais.cvepai AND nomtrab.cvecia = nompais.cvecia LEFT JOIN nomciud ON nomtrab.cvepa2 = nomciud.cvepai AND nomtrab.cveci2 = nomciud.cveciu AND nomtrab.cvecia = nomciud.cvecia LEFT JOIN nompues ON nomtrab.cvepue = nompues.cvepue AND nomtrab.cvecia = nompues.cvecia where status='A' AND nompues.despue NOT LIKE '%OPERADOR DE%'";
+                    //String consulta = "SELECT nomtrab.nombre, nomtrab.apepat, nomtrab.apemat, ISNULL(CC.desubi,'') AS [cc], ISNULL(nompais.despai,'') AS [base], nomtrab.cvetra as numempleado, ISNULL(nomciud.desciu,'') AS [empresa], RTRIM(LTRIM(ISNULL(nompues.despue,''))) AS [Puesto], nomtrab.email, nomtrab.tel1, nomtrab.numext FROM [Nom2001].[dbo].[nomtrab]  LEFT JOIN nomubic CC ON nomtrab.cvepa2 = CC.cvepai AND nomtrab.cveci2 = CC.cveciu AND nomtrab.cvecia = CC.cvecia AND nomtrab.cveubi = CC.cveubi LEFT JOIN nompais ON nomtrab.cvepa2 = nompais.cvepai AND nomtrab.cvecia = nompais.cvecia LEFT JOIN nomciud ON nomtrab.cvepa2 = nomciud.cvepai AND nomtrab.cveci2 = nomciud.cveciu AND nomtrab.cvecia = nomciud.cvecia LEFT JOIN nompues ON nomtrab.cvepue = nompues.cvepue AND nomtrab.cvecia = nompues.cvecia where status='A' AND nompues.despue NOT LIKE '%OPERADOR DE%'";
+                    String consulta = "SELECT nomtrab.nombre, nomtrab.apepat, nomtrab.apemat, ISNULL(CC.desubi,'') AS [cc], ISNULL(nompais.despai,'') AS [base], nomtrab.cvetra as numempleado, ISNULL(nomciud.desciu,'') AS [empresa], RTRIM(LTRIM(ISNULL(nompues.despue,''))) AS [Puesto], nomtrab.email, nomtrab.tel1, nomtrab.numext, nomtrab.status, nomtrab.fecalt, nomtrab.fecbaj FROM [Nom2001].[dbo].[nomtrab]  LEFT JOIN nomubic CC ON nomtrab.cvepa2 = CC.cvepai AND nomtrab.cveci2 = CC.cveciu AND nomtrab.cvecia = CC.cvecia AND nomtrab.cveubi = CC.cveubi LEFT JOIN nompais ON nomtrab.cvepa2 = nompais.cvepai AND nomtrab.cvecia = nompais.cvecia LEFT JOIN nomciud ON nomtrab.cvepa2 = nomciud.cvepai AND nomtrab.cveci2 = nomciud.cveciu AND nomtrab.cvecia = nomciud.cvecia LEFT JOIN nompues ON nomtrab.cvepue = nompues.cvepue AND nomtrab.cvecia = nompues.cvecia where nompues.despue NOT LIKE '%OPERADOR DE%'";
                     SqlCommand comm = new SqlCommand(consulta, conexion);
                     SqlDataReader nwReader = comm.ExecuteReader();
                     while (nwReader.Read())
                     {
-                        String[] n = new String[12];
-                        n[0] = nwReader["numempleado"].ToString().TrimEnd(' ');
-                        n[1] = nwReader["nombre"].ToString().TrimEnd(' ');
-                        n[2] = nwReader["apepat"].ToString().TrimEnd(' ');
-                        n[3] = nwReader["apemat"].ToString().TrimEnd(' ');
-                        n[4] = nwReader["email"].ToString().TrimEnd(' ');
-                        n[5] = nwReader["cc"].ToString().TrimEnd(' ');
-                        n[6] = nwReader["base"].ToString().TrimEnd(' ');
-                        n[7] = nwReader["Puesto"].ToString().TrimEnd(' ');
-                        n[8] = nwReader["tel1"].ToString().TrimEnd(' ');
-                        n[9] = nwReader["numext"].ToString().TrimEnd(' ');
-                        n[10] = nwReader["empresa"].ToString().TrimEnd(' ');
-                        n[11] = n[1] + " " + n[2] + " " + n[3];
-                        lista.Add(n);
+                        String[] n = new String[14];
+                        if (nwReader["status"].ToString() == "A")
+                        {
+                            n[0] = nwReader["numempleado"].ToString().TrimEnd(' ');
+                            n[1] = nwReader["nombre"].ToString().TrimEnd(' ');
+                            n[2] = nwReader["apepat"].ToString().TrimEnd(' ');
+                            n[3] = nwReader["apemat"].ToString().TrimEnd(' ');
+                            n[4] = nwReader["email"].ToString().TrimEnd(' ');
+                            n[5] = nwReader["cc"].ToString().TrimEnd(' ');
+                            n[6] = nwReader["base"].ToString().TrimEnd(' ');
+                            n[7] = nwReader["Puesto"].ToString().TrimEnd(' ');
+                            n[8] = nwReader["tel1"].ToString().TrimEnd(' ');
+                            n[9] = nwReader["numext"].ToString().TrimEnd(' ');
+                            n[10] = nwReader["empresa"].ToString().TrimEnd(' ');
+                            n[11] = n[1] + " " + n[2] + " " + n[3];
+                            n[12] = nwReader["fecalt"].ToString().TrimEnd(' ');
+                            n[13] = nwReader["fecbaj"].ToString().TrimEnd(' ');
+                            lista.Add(n);
+                        }
+                        else
+                        {
+                            n[0] = nwReader["numempleado"].ToString().TrimEnd(' ');
+                            n[1] = nwReader["nombre"].ToString().TrimEnd(' ');
+                            n[2] = nwReader["apepat"].ToString().TrimEnd(' ');
+                            n[3] = nwReader["apemat"].ToString().TrimEnd(' ');
+                            n[4] = nwReader["email"].ToString().TrimEnd(' ');
+                            n[5] = nwReader["cc"].ToString().TrimEnd(' ');
+                            n[6] = nwReader["base"].ToString().TrimEnd(' ');
+                            n[7] = nwReader["Puesto"].ToString().TrimEnd(' ');
+                            n[8] = nwReader["tel1"].ToString().TrimEnd(' ');
+                            n[9] = nwReader["numext"].ToString().TrimEnd(' ');
+                            n[10] = nwReader["empresa"].ToString().TrimEnd(' ');
+                            n[11] = n[1] + " " + n[2] + " " + n[3];
+                            n[12] = nwReader["fecalt"].ToString().TrimEnd(' ');
+                            n[13] = nwReader["fecbaj"].ToString().TrimEnd(' ');
+                            lista_baja.Add(n);
+                        }
                     }
                 }
             }
@@ -123,36 +156,18 @@ namespace AltaSiTTi
             {
                 foreach (String[] n in lista)
                 {
-                    dataGridView1.Rows.Add(n[11]+" | "+n[6]+" | "+n[7], n[0], n[11]);
+                    dataGridView1.Rows.Add(n[11]+" | "+n[6]+" | "+n[7], n[0], n[11], n[12], n[13]);
                 }
             }
+            button1.Enabled = true;
+            buscarbaja = false;
             buscar.Enabled = true;
             buscar.Focus();
         }
 
         private void buscar_KeyUp(object sender, KeyEventArgs e)
         {
-            dataGridView1.Rows.Clear();
-            if (!string.IsNullOrEmpty(buscar.Text))
-            {
-                foreach (String[] empleado in lista)
-                {
-                    String nmayus = empleado[11].ToString().ToUpper();
-                    //String nemple = empleado[0].ToString().ToUpper();
-                    String nbase = empleado[6].ToString().ToUpper();
-                    if (nmayus.Contains(buscar.Text.ToUpper()) || nbase.Contains(buscar.Text.ToUpper()))
-                    {
-                        dataGridView1.Rows.Add(empleado[11]+" | "+empleado[6]+" | "+empleado[7], empleado[0], empleado[11]);
-                    }
-                }
-            }
-            else
-            {
-                foreach (String[] empleado in lista)
-                {
-                    dataGridView1.Rows.Add(empleado[11] + " | " + empleado[6] + " | " + empleado[7], empleado[0], empleado[11]);
-                }
-            }
+            buscar_empleado();
         }
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -164,12 +179,68 @@ namespace AltaSiTTi
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             nombreusuario = dataGridView1.Rows[e.RowIndex].Cells["nombrecopiar"].Value.ToString();
-            numerodeempelado = dataGridView1.Rows[e.RowIndex].Cells["num"].Value.ToString();
             Clipboard.SetDataObject(nombreusuario, true);
-            Usuario usuario = new Usuario();
-            this.Enabled = false;
-            usuario.ShowDialog();
-            this.Enabled = true;
+            if (buscarbaja == false)
+            {
+                numerodeempelado = dataGridView1.Rows[e.RowIndex].Cells["num"].Value.ToString();
+                Usuario usuario = new Usuario();
+                this.Enabled = false;
+                usuario.ShowDialog();
+                this.Enabled = true;
+            }
+            else
+            {
+                String alta = dataGridView1.Rows[e.RowIndex].Cells["alta"].Value.ToString();
+                String baja = dataGridView1.Rows[e.RowIndex].Cells["baja"].Value.ToString();
+                DateTime alta_date = Convert.ToDateTime(alta);
+                DateTime baja_date = Convert.ToDateTime(baja);
+                MessageBox.Show("ALTA: " + alta_date.ToShortDateString() + "\n\nBAJA: " + baja_date.ToShortDateString(), "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if(buscarbaja==false)
+            {
+                button1.Text = "Empleados";
+                this.Text = "Lista de baja de empleados";
+                buscarbaja = true;
+            }
+            else
+            {
+                button1.Text = "Empleados baja";
+                this.Text = "Alta en SiTTi | Lista de empleados";
+                buscarbaja = false;
+            }
+            buscar_empleado();
+            buscar.Focus();
+        }
+        
+        void buscar_empleado()
+        {
+            dataGridView1.Rows.Clear();
+            lista_buscar = (buscarbaja == false) ? lista : lista_baja;
+
+            if (!string.IsNullOrEmpty(buscar.Text))
+            {
+                foreach (String[] empleado in lista_buscar)
+                {
+                    String nmayus = empleado[11].ToString().ToUpper();
+                    String npuesto = empleado[7].ToString().ToUpper();
+                    String nbase = empleado[6].ToString().ToUpper();
+                    if (nmayus.Contains(buscar.Text.ToUpper()) || nbase.Contains(buscar.Text.ToUpper()) || npuesto.Contains(buscar.Text.ToUpper()))
+                    {
+                        dataGridView1.Rows.Add(empleado[11] + " | " + empleado[6] + " | " + empleado[7], empleado[0], empleado[11], empleado[12], empleado[13]);
+                    }
+                }
+            }
+            else
+            {
+                foreach (String[] empleado in lista_buscar)
+                {
+                    dataGridView1.Rows.Add(empleado[11] + " | " + empleado[6] + " | " + empleado[7], empleado[0], empleado[11], empleado[12], empleado[13]);
+                }
+            }
         }
     }
 }

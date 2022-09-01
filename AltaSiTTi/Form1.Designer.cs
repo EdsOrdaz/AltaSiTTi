@@ -36,19 +36,22 @@ namespace AltaSiTTi
             this.label1 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.button1 = new System.Windows.Forms.Button();
             this.nombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.num = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.nombrecopiar = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.alta = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.baja = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // buscar
             // 
             this.buscar.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buscar.Location = new System.Drawing.Point(8, 25);
+            this.buscar.Location = new System.Drawing.Point(8, 22);
             this.buscar.Margin = new System.Windows.Forms.Padding(2);
             this.buscar.Name = "buscar";
-            this.buscar.Size = new System.Drawing.Size(525, 23);
+            this.buscar.Size = new System.Drawing.Size(386, 23);
             this.buscar.TabIndex = 1;
             this.buscar.KeyUp += new System.Windows.Forms.KeyEventHandler(this.buscar_KeyUp);
             // 
@@ -56,7 +59,7 @@ namespace AltaSiTTi
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(5, 5);
+            this.label1.Location = new System.Drawing.Point(5, 2);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(161, 20);
@@ -82,9 +85,11 @@ namespace AltaSiTTi
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.nombre,
             this.num,
-            this.nombrecopiar});
+            this.nombrecopiar,
+            this.alta,
+            this.baja});
             this.dataGridView1.EnableHeadersVisualStyles = false;
-            this.dataGridView1.Location = new System.Drawing.Point(8, 53);
+            this.dataGridView1.Location = new System.Drawing.Point(8, 50);
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
@@ -100,6 +105,17 @@ namespace AltaSiTTi
             // 
             this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
             this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
+            // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Location = new System.Drawing.Point(399, 22);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(127, 23);
+            this.button1.TabIndex = 4;
+            this.button1.Text = "Empleados baja";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // nombre
             // 
@@ -123,11 +139,26 @@ namespace AltaSiTTi
             this.nombrecopiar.ReadOnly = true;
             this.nombrecopiar.Visible = false;
             // 
+            // alta
+            // 
+            this.alta.HeaderText = "alta";
+            this.alta.Name = "alta";
+            this.alta.ReadOnly = true;
+            this.alta.Visible = false;
+            // 
+            // baja
+            // 
+            this.baja.HeaderText = "baja";
+            this.baja.Name = "baja";
+            this.baja.ReadOnly = true;
+            this.baja.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(538, 215);
+            this.ClientSize = new System.Drawing.Size(538, 211);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.buscar);
@@ -152,9 +183,12 @@ namespace AltaSiTTi
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.DataGridViewTextBoxColumn nombre;
         private System.Windows.Forms.DataGridViewTextBoxColumn num;
         private System.Windows.Forms.DataGridViewTextBoxColumn nombrecopiar;
+        private System.Windows.Forms.DataGridViewTextBoxColumn alta;
+        private System.Windows.Forms.DataGridViewTextBoxColumn baja;
     }
 }
 
